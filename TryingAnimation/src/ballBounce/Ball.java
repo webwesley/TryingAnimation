@@ -46,7 +46,7 @@ public class Ball extends JPanel implements ActionListener {
 			vectors.add(new int[2]);
 			for (int j = 0; j < 2; j++) {
 				position.get(i)[j] = random.nextInt(dimensions[j]);
-				vectors.get(i)[j] = random.nextInt(9) + 1;
+				vectors.get(i)[j] = random.nextInt(5) + 1;
 			}
 		}
 		time.start();
@@ -55,12 +55,17 @@ public class Ball extends JPanel implements ActionListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		for (int i = 0; i < numberOfBalls; i++) {
+			if(i == 0) {
+				g.setColor(Color.RED);
+			} else {
+				g.setColor(Color.CYAN);
+			}
 			paintBall(position.get(i)[0], position.get(i)[1], ballSize, g);
 		}
 	}
 
 	private void paintBall(int x, int y, int ballSize, Graphics g) {
-		g.setColor(Color.CYAN);
+		
 		g.fillOval(x, y, ballSize, ballSize);
 	}
 
@@ -75,8 +80,12 @@ public class Ball extends JPanel implements ActionListener {
 		for (int i = 0; i < numberOfBalls; i++) {
 			for (int j = i + 1; j < numberOfBalls; j++) {
 				if (checkSpace(i, j)) {
-					//TODO change vectors of both balls based upon if there is a collision
-					
+					int vX1 = vectors.get(i)[0];
+					int vY1 = vectors.get(i)[1];
+					vectors.get(i)[0] = vectors.get(j)[0];
+					vectors.get(i)[1] = vectors.get(j)[1];
+					vectors.get(j)[0] = vX1;
+					vectors.get(j)[1] = vY1;
 				}
 			}
 		}
@@ -114,8 +123,8 @@ public class Ball extends JPanel implements ActionListener {
 
 	public static void main(String[] args) {
 		System.setProperty("sun.java2d.opengl", "true");
-		int width = 700, height = 700;
-		Ball test = new Ball(30, 2, width, height);
+		int width = 1500, height = 1000;
+		Ball test = new Ball(10, 50, width, height);
 		JFrame frame = new JFrame();
 		frame.setSize(width, height);
 		frame.setTitle("Ball Test");
